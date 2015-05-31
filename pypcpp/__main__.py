@@ -35,16 +35,15 @@ def main(args):
 	else:
 		search = ' '.join(arguments['<search>'])
 		
-		type = tools.typeFromArgs(args)
-		sort = tools.sortFromColumnName(type, args['--sort'], args['--descending'])
+		type = tools.PartType.typeFromArgs(args)
 		options = { 'type' : type,
-					'sort' : sort,
+					'sortby' : args['--sort'],
+					'order' : 'd' if args['--descending'] else 'a',
 					'login' : args['--login'] }
-		
+	
 		pcp.Search(search, options).run()
 	
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='Python PCPartPicker 0.1')
 	#print(arguments)
-	## BRANCH DEV
 	main(arguments)

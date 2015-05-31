@@ -1,65 +1,85 @@
 from collections import OrderedDict
 import constants
+import part
+	
+class PartType:
+	def __init__(self, name):
+		self.name = name
+		self.fields = self.__generateFields()
+		
+	#returns a8, d8, depending on the column and order
+	#will default to price in ascending order
+	def sortString(self, sortby, order):
+		return '{}{}'.format(order, self.fields.get(sortby, 'price'))
 
-def typeFields(type):
-		fields = OrderedDict()
+	def newPart(self):
+		partClasses = { constants.VIDEOCARD:part.VideoCard,
+						constants.CPU:part.CPU,
+						constants.RAM:part.RAM,
+						constants.MOTHERBOARD:part.Motherboard,
+						constants.CASE:part.Case }
+	
+		return partClasses[self.name](self.name)
 		
-		if type == constants.VIDEOCARD:
-			fields['videocard'] = 1
-			fields['series'] = 2
-			fields['chipset'] = 3
-			fields['memory'] = 4
-			fields['coreclock'] = 5
-			fields['price'] = 8
+	def __generateFields(self):
+		flds = OrderedDict()
 		
-		if type == constants.CPU:
-			fields['cpu'] = 1
-			fields['speed'] = 2
-			fields['cores'] = 3
-			fields['tdp'] = 4
-			fields['price'] = 7
-			
-		if type == constants.RAM:
-			fields['ram'] = 1
-			fields['speed'] = 2
-			#fields['type'] = 3
-			fields['modules'] = 5
-			#fields['size'] = 6
-			fields['price/gb'] = 7
-			fields['price'] = 10
-			
-		if type == constants.MOTHERBOARD:
-			fields['motherboard'] = 1
-			fields['socket/cpu'] = 2
-			fields['formfactor'] = 3
-			fields['ramslots'] = 4
-			#fields['maxram'] = 5
-			fields['price'] = 8
-			
-		if type == constants.CASE:
-			fields['case'] = 1
-			fields['type'] = 2
-			#fields['psu'] = 5
-			fields['price'] = 8
-			
-		return fields
+		if self.name == constants.VIDEOCARD:
+			flds['videocard'] = 1
+			flds['series'] = 2
+			flds['chipset'] = 3
+			flds['memory'] = 4
+			flds['coreclock'] = 5
+			flds['price'] = 8
 		
-#returns a8, d8, depending on the column and order
-#will default to price in ascending order
-def sortFromColumnName(type, name, descending):
-	return '{}{}'.format('d' if descending else 'a', typeFields(type).get(name, 'price'))
-
-def typeFromArgs(arg):
-	if arg['--videocard'] == True:
-		return constants.VIDEOCARD
-	elif arg['--cpu'] == True:
-		return constants.CPU
-	elif arg['--ram'] == True:
-		return constants.RAM
-	elif arg['--motherboard'] == True:
-		return constants.MOTHERBOARD
-	elif arg['--tower'] == True:
-		return constants.CASE
+		if self.name == constants.CPU:
+			flds['cpu'] = 1
+			flds['speed'] = 2
+			flds['cores'] = 3
+			flds['tdp'] = 4
+			flds['price'] = 7
+			
+		if self.name == constants.RAM:
+			flds['ram'] = 1
+			flds['speed'] = 2
+			#flds['type'] = 3
+			flds['modules'] = 5
+			#flds['size'] = 6
+			flds['price/gb'] = 7
+			flds['price'] = 10
+			
+		if self.name == constants.MOTHERBOARD:
+			flds['motherboard'] = 1
+			flds['socket/cpu'] = 2
+			flds['formfactor'] = 3
+			flds['ramslots'] = 4
+			#flds['maxram'] = 5
+			flds['price'] = 8
+			
+		if self.name == constants.CASE:
+			flds['case'] = 1
+			flds['type'] = 2
+			#flds['psu'] = 5
+			flds['price'] = 8
+			
+		return flds
+		
+	@staticmethod
+	def typeFromArgs(arg):
+		typestring = None
+		
+		if arg['--videocard'] == True:
+			typestring = constants.VIDEOCARD
+		elif arg['--cpu'] == True:
+			typestring = constants.CPU
+		elif arg['--ram'] == True:
+			typestring = constants.RAM
+		elif arg['--motherboard'] == True:
+			typestring = constants.MOTHERBOARD
+		elif arg['--tower'] == True:
+			typestring = constants.CASE
+		
+		return PartType(typestring)
 		
 def getLoginInfo():
 	from configparser import SafeConfigParser

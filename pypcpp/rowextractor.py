@@ -7,12 +7,11 @@ class RowExtractor:
 	def __init__(self, type, rows):
 		self.type = type
 		self.rows = rows
-		self.fields = tools.typeFields(self.type)
 		
 	def extract(self):
 		result = []
 		
-		for a in range(len(self.rows)):
+		for a in self.rows:
 			rowresult = self.__workRow(a)
 			if rowresult is not None:
 				result.append(rowresult)
@@ -20,11 +19,11 @@ class RowExtractor:
 		return result
 			
 	def __workRow(self, row):
-		tds = self.rows[row].findAll('td')
+		tds = row.findAll('td')
 		
-		part = Part.fromTypeToPartClass(self.type)
+		part = self.type.newPart()
 		
-		for c, n in self.fields.items():
+		for c, n in self.type.fields.items():
 			if not tds[n].a:
 				part.fields[c] = tds[n].text
 			else:

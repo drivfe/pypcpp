@@ -18,16 +18,6 @@ class Part:
 		
 	def beautifyFields(self):
 		pass
-		
-	@staticmethod
-	def fromTypeToPartClass(type):
-		partClasses = { constants.VIDEOCARD:VideoCard,
-						constants.CPU:CPU,
-						constants.RAM:RAM,
-						constants.MOTHERBOARD:Motherboard,
-						constants.CASE:Case }
-	
-		return partClasses[type](type)
 
 class CPU(Part):
 	pass
@@ -51,3 +41,4 @@ class Motherboard(Part):
 	
 class Case(Part):
 	pass
+	

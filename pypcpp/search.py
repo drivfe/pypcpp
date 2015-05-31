@@ -15,15 +15,15 @@ class Search:
 		self.session = requests.Session()
 	
 	def run(self):
-		print("Searching '{}' of type '{}'".format(self.search, self.type))
+		print("Searching '{}' of type '{}'".format(self.search, self.type.name))
 
-		URL = "http://pcpartpicker.com/parts/{}/fetch/".format(self.type)
+		URL = "http://pcpartpicker.com/parts/{}/fetch/".format(self.type.name)
 	
 		payload = { 'mode': 'list',
 					'xslug': '',
 					'search': self.search,
 					'page': self.opts.get('page', 1),
-					'sort': self.opts.get('sort') }
+					'sort': self.type.sortString(self.opts['sortby'], self.opts['order']) }
 					# a8 = column 8 sort ascending
 					
 		if self.opts['login']:
@@ -42,13 +42,13 @@ class Search:
 		self.outputTable(extracted)
 		
 	def outputTable(self, extr):
-		tbl = PrettyTable(list(tools.typeFields(self.type)))
+		tbl = PrettyTable(list(self.type.fields))
 		tbl.align = 'l'
 		tbl.border = False
 		tbl.header_style = 'upper'
 		
 		for r in extr:
-			tbl.add_row(shrinkText(r.fields.values(), 17))
+			tbl.add_row(shrinkText(r.fields.values()))
 		
 		print(tbl)
 
@@ -66,14 +66,15 @@ class Search:
 		
 		r = self.session.post(LOGIN_URL, data=data)
 		
-def shrinkText(values, limit):
+def shrinkText(values):
 	MAX_LENGTH = 100
-	newList = values
-	shrink = lambda text: text if len(text) < limit else text[:limit]+'...'
+	newList = list(values)
+	limit = int(MAX_LENGTH / len(newList))
+	shrink = lambda text: text if len(text) < limit else text[0:limit]+'...'
 	
-	length = sum([len(a) for a in values])
-	if length > MAX_LENGTH:
-		newList = [shrink(s) for s in values]
+	length = len(newList[0])
+	if length > limit:
+		newList[0] = shrink(newList[0])
 		
 	return newList
 	
