@@ -65,21 +65,26 @@ def getLoginInfo():
 	from configparser import SafeConfigParser
 	import os
 	
+	FILEPATH = '{}\pypcpp.conf'.format(configFilePath())
+	if not os.path.isfile(FILEPATH):
+		open(FILEPATH, 'a').close()
+		writeLoginInfo('', '', True)
+	
 	parser = SafeConfigParser()
-	parser.read('{}\pypcpp.conf'.format(configFilePath()))
+	parser.read(FILEPATH)
 	result = {  'username': parser.get('Login Info', 'username'),
 				'password': parser.get('Login Info', 'password') }
 	return result
 	
-def writeLoginInfo(username, password):
+def writeLoginInfo(username, password, acceptNone=False):
 	from configparser import SafeConfigParser
 	import os
 	
 	parser = SafeConfigParser()
 	parser.add_section('Login Info')
-	if username:
+	if username or acceptNone:
 		parser.set('Login Info', 'username', username)
-	if password:
+	if password or acceptNone:
 		parser.set('Login Info', 'password', password)
 		
 	cfg = '{}\pypcpp.conf'.format(configFilePath())

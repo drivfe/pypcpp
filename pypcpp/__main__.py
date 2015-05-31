@@ -30,7 +30,7 @@ def main(args):
 			tools.writeLoginInfo(args['--user'], args['--pass'])
 		
 		linfo = tools.getLoginInfo()
-		print('Here is your login info: {}\nThe config file is saved in: {}'.format(linfo, tools.configFilePath()))
+		print('Here is your login info: {}\nUse \'--user=<user>\' and \'--pass=<password>\' to save your info\nThe config file is saved in: {}'.format(linfo, tools.configFilePath()))
 	
 	else:
 		search = ' '.join(arguments['<search>'])
