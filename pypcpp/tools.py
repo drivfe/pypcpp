@@ -13,11 +13,13 @@ class PartType:
 		return '{}{}'.format(order, self.fields.get(sortby, 'price'))
 
 	def newPart(self):
-		partClasses = { constants.VIDEOCARD:part.VideoCard,
-						constants.CPU:part.CPU,
-						constants.RAM:part.RAM,
-						constants.MOTHERBOARD:part.Motherboard,
-						constants.CASE:part.Case }
+		partClasses = {
+			constants.VIDEOCARD:part.VideoCard,
+			constants.CPU:part.CPU,
+			constants.RAM:part.RAM,
+			constants.MOTHERBOARD:part.Motherboard,
+			constants.CASE:part.Case
+		}
 	
 		return partClasses[self.name](self.name)
 		
@@ -85,15 +87,17 @@ def getLoginInfo():
 	from configparser import SafeConfigParser
 	import os
 	
-	FILEPATH = '{}\pypcpp.conf'.format(configFilePath())
+	FILEPATH = '{}\pypcpp.conf'.format(currentDir())
 	if not os.path.isfile(FILEPATH):
 		open(FILEPATH, 'a').close()
 		writeLoginInfo('', '', True)
 	
 	parser = SafeConfigParser()
 	parser.read(FILEPATH)
-	result = {  'username': parser.get('Login Info', 'username'),
-				'password': parser.get('Login Info', 'password') }
+	result = {
+		'username': parser.get('Login Info', 'username'),
+		'password': parser.get('Login Info', 'password')
+	}
 	return result
 	
 def writeLoginInfo(username, password, acceptNone=False):
@@ -107,10 +111,10 @@ def writeLoginInfo(username, password, acceptNone=False):
 	if password or acceptNone:
 		parser.set('Login Info', 'password', password)
 		
-	cfg = '{}\pypcpp.conf'.format(configFilePath())
+	cfg = '{}\pypcpp.conf'.format(currentDir())
 	with open(cfg, 'w') as fh:
-		parser.write(fh)
+		parser.write(fh)	
 		
-def configFilePath():
+def currentDir():
 	import os
 	return os.path.dirname(os.path.abspath(__file__))

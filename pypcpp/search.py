@@ -19,12 +19,16 @@ class Search:
 
 		URL = "http://pcpartpicker.com/parts/{}/fetch/".format(self.type.name)
 	
-		payload = { 'mode': 'list',
-					'xslug': '',
-					'search': self.search,
-					'page': self.opts.get('page', 1),
-					'sort': self.type.sortString(self.opts['sortby'], self.opts['order']) }
-					# a8 = column 8 sort ascending
+		payload = {
+			'mode': 'list',
+			'xslug': '',
+			'search': self.search,
+			'page': self.opts.get('page', 1),
+			'sort': self.type.sortString(
+				self.opts['sortby'],
+				self.opts['order']
+				)
+		}
 					
 		if self.opts['login']:
 			self.login()
@@ -61,7 +65,11 @@ class Search:
 		tokensoup = BeautifulSoup(r.text)
 		token = tokensoup.find('input', attrs={'name':'csrfmiddlewaretoken'})['value']
 
-		data = {'checkbox':'on', 'csrfmiddlewaretoken':token, 'next':''}
+		data = {
+			'checkbox':'on',
+			'csrfmiddlewaretoken':token,
+			'next':''
+		}
 		data.update(tools.getLoginInfo())
 		
 		r = self.session.post(LOGIN_URL, data=data)

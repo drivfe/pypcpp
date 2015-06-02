@@ -30,16 +30,18 @@ def main(args):
 			tools.writeLoginInfo(args['--user'], args['--pass'])
 		
 		linfo = tools.getLoginInfo()
-		print('Here is your login info: {}\nUse \'--user=<user>\' and \'--pass=<password>\' to save your info\nThe config file is saved in: {}'.format(linfo, tools.configFilePath()))
+		print('Here is your login info: {}\nUse \'--user=<user>\' and \'--pass=<password>\' to save your info\nThe config file is saved in: {}'.format(linfo, tools.currentDir()))
 	
 	else:
 		search = ' '.join(arguments['<search>'])
 		
 		type = tools.PartType.typeFromArgs(args)
-		options = { 'type' : type,
-					'sortby' : args['--sort'],
-					'order' : 'd' if args['--descending'] else 'a',
-					'login' : args['--login'] }
+		options = {
+			'type' : type,
+			'sortby' : args['--sort'],
+			'order' : 'd' if args['--descending'] else 'a',
+			'login' : args['--login']
+		}
 	
 		pcp.Search(search, options).run()
 	
