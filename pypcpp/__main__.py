@@ -1,6 +1,6 @@
 """Python PCPartPicker
 Usage:
-  pypcpp.py (-c | -v | -r | -m | -t) <search>... [--sort=<sort> [-a | -d]] [-l]
+  pypcpp.py (-c | -v | -r | -m | -t | -p | -s) <search>... [--sort=<sort> [-a | -d]] [-l]
   pypcpp.py logininfo --user=<username> --pass=<password>
   pypcpp.py logininfo
   pypcpp.py (-h | --help)
@@ -11,16 +11,20 @@ Usage:
   -r, --ram          RAM search
   -m, --motherboard  Motherboard search
   -t, --tower        Tower/Case search
-  -s, --sort <sort>  Sort by. [default: price]
+  -p, --psu          Power Supply search
+  -s, --storage      Storage search (HDD/SSD)
+  
+  --sort=<sort>      Sort by. [default: price]
   -a, --ascending    Ascending order
   -d, --descending   Descending order
+  
   -h, --help         Show help
   -l, --login        Login before doing search
   --user=<username>  Save username to config file
   --pass=<password>  Save password to config file
 """
 
-import sys, tools
+import tools
 import pypcpp.pypcpp as pcp
 from docopt import docopt
 

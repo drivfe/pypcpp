@@ -29,10 +29,11 @@ class Search:
 				self.opts['order']
 				)
 		}
-					
+		
 		if self.opts['login']:
 			self.login()
 		
+		#cachejson is just for debugging
 		if True:
 			r = self.session.get(URL, params=payload)
 			with open('pypcpp\cachejson.html', 'w+') as fh:

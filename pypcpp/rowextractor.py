@@ -30,8 +30,6 @@ class RowExtractor:
 				part.fields[c] = tds[n].a.text
 				
 		part.beautifyFields()
-		#if part.fields['price']:
-		#	print(repr(part))
 		
 		return part if part.fields['price'] else None #Only return Part if price is available
 			

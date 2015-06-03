@@ -18,7 +18,9 @@ class PartType:
 			constants.CPU:part.CPU,
 			constants.RAM:part.RAM,
 			constants.MOTHERBOARD:part.Motherboard,
-			constants.CASE:part.Case
+			constants.CASE:part.Case,
+			constants.PSU:part.PSU,
+			constants.STORAGE:part.Storage
 		}
 	
 		return partClasses[self.name](self.name)
@@ -63,7 +65,25 @@ class PartType:
 			flds['type'] = 2
 			#flds['psu'] = 5
 			flds['price'] = 8
-			
+		
+		if self.name == constants.PSU:
+			flds['powersupply'] = 1
+			flds['series'] = 2
+			flds['form'] = 3
+			flds['efficiency'] = 4
+			flds['watts'] = 5
+			flds['modular'] = 6
+			flds['price'] = 9
+		
+		if self.name == constants.STORAGE:
+			flds['storage'] = 1
+			flds['series'] = 2
+			flds['type'] = 4
+			flds['capacity'] = 5
+			flds['cache'] = 6
+			#flds['price/gb'] = 7
+			flds['price'] = 10
+		
 		return flds
 		
 	@staticmethod
@@ -80,6 +100,10 @@ class PartType:
 			typestring = constants.MOTHERBOARD
 		elif arg['--tower'] == True:
 			typestring = constants.CASE
+		elif arg['--psu'] == True:
+			typestring = constants.PSU
+		elif arg['--storage'] == True:
+			typestring = constants.STORAGE
 		
 		return PartType(typestring)
 		

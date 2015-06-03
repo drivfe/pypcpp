@@ -32,7 +32,7 @@ class VideoCard(Part):
 		
 		#Remove 'black edition' from series (string too long)
 		self.fields['series'] = self.fields['series'].replace('Black Edition ', '')
-
+		
 class RAM(Part):
 	pass
 	
@@ -41,4 +41,15 @@ class Motherboard(Part):
 	
 class Case(Part):
 	pass
+
+class Storage(Part):
+	def beautifyFields(self):
+		#Only brand, Western Digital fails
+		self.fields['storage'] = self.fields['storage'].split(' ')[0]
+		if 'Western' in self.fields['storage']:
+			self.fields['storage'] = 'Western Digital'
 	
+class PSU(Part):
+	def beautifyFields(self):
+		#Only brand name
+		self.fields['powersupply'] = self.fields['powersupply'].split(' ')[0]
