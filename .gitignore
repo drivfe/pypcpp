@@ -1,3 +1,6 @@
 pypcpp/__pycache__/
 pypcpp/pypcpp.conf
 pypcpp/cachejson.html
+pypcpp.egg-info/
+dist/
+build/
