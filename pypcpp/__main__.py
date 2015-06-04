@@ -25,8 +25,14 @@ Usage:
 """
 
 import tools
-import pypcpp.pypcpp as pcp
 from docopt import docopt
+
+try:
+	import pypcpp
+except ImportError:
+	import sys, os
+	sys.path.append(os.path.join(tools.currentDir(), '..'))
+	import pypcpp as pcp
 
 def main(args):
 	if args['logininfo']:		

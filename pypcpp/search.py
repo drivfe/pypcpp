@@ -34,7 +34,7 @@ class Search:
 			self.login()
 		
 		#cachejson is just for debugging
-		if True:
+		if False:
 			r = self.session.get(URL, params=payload)
 			with open('pypcpp\cachejson.html', 'w+') as fh:
 				fh.write(r.json()['result']['html']);
