@@ -14,5 +14,10 @@ setup(
     keywords = "pcpartpicker",
     url = "https://github.com/drivfe/pypcpp",
     packages=['pypcpp'],
+	install_requires=[
+		"beautifulsoup4",
+		"requests",
+		"PrettyTable"
+	],
     long_description=read('README.md')
 )
