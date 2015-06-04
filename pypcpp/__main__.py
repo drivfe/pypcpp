@@ -28,7 +28,7 @@ import tools
 from docopt import docopt
 
 try:
-	import pypcpp
+	import pypcpp as pcp
 except ImportError:
 	import sys, os
 	sys.path.append(os.path.join(tools.currentDir(), '..'))
