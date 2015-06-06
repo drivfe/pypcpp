@@ -19,7 +19,7 @@ Usage:
   -d, --descending   Descending order
   
   -h, --help         Show help
-  -l, --login        Login before doing search
+  -l, --login        Log in before doing search
   --user=<username>  Save username to config file
   --pass=<password>  Save password to config file
 """
