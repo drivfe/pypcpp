@@ -5,7 +5,9 @@ Python 3.x only.
 
 ## Installation
 ```
-python setup.py install
+git clone https://github.com/drivfe/pypcpp.git
+cd pypcpp
+python pypcpp
 ```
 **Requirements** (All via pip):
 * requests
@@ -13,12 +15,14 @@ python setup.py install
 * PrettyTable
 
 ## Usage
-```
+```sh
   pypcpp.py (-c | -v | -r | -m | -t | -p | -s) <search>... [--sort=<sort> [-a | -d]] [-l]
   pypcpp.py logininfo --user=<username> --pass=<password>
   pypcpp.py logininfo
   pypcpp.py (-h | --help)
- Options:
+```
+#### Options
+```sh
   -c, --cpu          CPU search
   -v, --videocard    Video Card search
   -r, --ram          RAM search
@@ -54,7 +58,7 @@ python pypcpp logininfo # will output your credentials
 After you have set up your login info you can use the '-l/--login' switch and the program will log you in before performing a search:
 ```sh
 python pypcpp --cpu fx 6300 -l
-python pypcpp --storage western digital 1tb --sort=type -a # check the notes for info on what to pass to --sort
+python pypcpp --storage western digital 1tb --sort=type -a -l # check the notes for info on what to pass to --sort
 python pypcpp -v r9 280 --sort=coreclock -d --login # This will list all r9 280s sorted by their coreclock in descending order after logging in on your account.
 ```
 
