@@ -82,7 +82,16 @@ def search(search, opts):
 		r = session.get(URL, params=payload)
 		with open(CACHE, 'w+') as fh:
 			fh.write(r.json()['result']['html'])
-
+			
+	print(
+	"Searching '{}' of part type '{}' sorted by {} in {} order.\n".format(
+			search,
+			ptype.name,
+			opts['sortby'],
+			'ascending' if opts['order'] == 'a' else 'descending'
+		)
+	)
+	
 	soup = BeautifulSoup(open(CACHE))
 	rows = soup.findAll('tr')
 	extracted = RowExtractor(ptype, rows).extract()
