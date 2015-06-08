@@ -23,14 +23,17 @@ Options:
   --user=<username>  Save username to config file
   --pass=<password>  Save password to config file
 """
+import os
 from docopt import docopt
+
+def cDir():
+	return os.path.dirname(os.path.abspath(__file__))
 
 try:
 	import pypcpp as pcp
 except ImportError:
-	import sys, os
-	cpath = os.path.dirname(os.path.abspath(__file__))
-	sys.path.append(os.path.join(cpath, '..'))
+	import sys
+	sys.path.append(os.path.join(cDir(), '..'))
 	import pypcpp as pcp
 
 def main(args):
@@ -39,7 +42,11 @@ def main(args):
 			pcp.tools.writeLoginInfo(args['--user'], args['--pass'])
 		
 		linfo = pcp.tools.getLoginInfo()
-		print('Here is your login info: {}\nUse \'--user=<user>\' and \'--pass=<password>\' to save your info\nThe config file is saved in: {}'.format(linfo, tools.currentDir()))
+		if not linfo['username'] or not linfo['password']:
+			print('Your info is not yet saved, Use \'--user=<user>\' and \'--pass=<password>\' to save your info')
+		else:
+			print('Here is your login info: {}'.format(linfo))
+		print('The config file is saved in:', cDir())
 	
 	else:
 		sterm = ' '.join(arguments['<search>'])
