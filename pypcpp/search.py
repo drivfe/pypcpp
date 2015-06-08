@@ -1,80 +1,20 @@
 from bs4 import BeautifulSoup
 from .rowextractor import RowExtractor
-from pprint import pprint
 from prettytable import PrettyTable
-import prettytable
 import tools
 import requests, os
 
-class Search:
-	def __init__(self, search, options={}):
-		self.search = search
-		self.results = []
-		self.opts = options
-		self.type = self.opts['type']
-		self.session = requests.Session()
-	
-	def run(self):
-		print("Searching '{}' of type '{}'".format(self.search, self.type.name))
+def outputTable(ptype, extr):
+	tbl = PrettyTable(list(ptype.fields))
+	tbl.align = 'l'
+	tbl.border = False
+	tbl.header_style = 'upper'
 
-		URL = "http://pcpartpicker.com/parts/{}/fetch/".format(self.type.name)
-	
-		payload = {
-			'mode': 'list',
-			'xslug': '',
-			'search': self.search,
-			'page': self.opts.get('page', 1),
-			'sort': self.type.sortString(
-				self.opts['sortby'],
-				self.opts['order']
-				)
-		}
-		
-		if self.opts['login']:
-			self.login()
-		
-		#cachejson is just for debugging
-		if True:
-			r = self.session.get(URL, params=payload)
-			with open('pypcpp\cachejson.html', 'w+') as fh:
-				fh.write(r.json()['result']['html']);
+	for r in extr:
+		tbl.add_row(shrinkText(r.fields.values()))
 
-		soup = BeautifulSoup(open('pypcpp\cachejson.html'))
-		rows = soup.findAll('tr')
-		
-		extracted = RowExtractor(self.type, rows).extract()
-		
-		self.outputTable(extracted)
-		
-	def outputTable(self, extr):
-		tbl = PrettyTable(list(self.type.fields))
-		tbl.align = 'l'
-		tbl.border = False
-		tbl.header_style = 'upper'
-		
-		for r in extr:
-			tbl.add_row(shrinkText(r.fields.values()))
-		
-		print(tbl)
+	print(tbl)
 
-	def login(self):
-		LOGIN_URL = "https://pcpartpicker.com/accounts/login/"
-		self.session.headers.update({'referer':LOGIN_URL})
-		self.session.headers.update({'User-Agent':'Bot testing'})
-
-		r = self.session.get(LOGIN_URL)
-		tokensoup = BeautifulSoup(r.text)
-		token = tokensoup.find('input', attrs={'name':'csrfmiddlewaretoken'})['value']
-
-		data = {
-			'checkbox':'on',
-			'csrfmiddlewaretoken':token,
-			'next':''
-		}
-		data.update(tools.getLoginInfo())
-		
-		r = self.session.post(LOGIN_URL, data=data)
-		
 def shrinkText(values):
 	MAX_LENGTH = 100
 	newList = list(values)
@@ -87,3 +27,52 @@ def shrinkText(values):
 		
 	return newList
 	
+def search(search, opts):
+	session = requests.Session()
+	ptype = opts['type']
+	
+	def login():
+		LOGIN_URL = "https://pcpartpicker.com/accounts/login/"
+		session.headers.update({'referer':LOGIN_URL})
+		session.headers.update({'User-Agent':'pypcpp'})
+
+		r = session.get(LOGIN_URL)
+		tokensoup = BeautifulSoup(r.text)
+		token = tokensoup.find('input', attrs={'name':'csrfmiddlewaretoken'})['value']
+
+		data = {
+			'checkbox':'on',
+			'csrfmiddlewaretoken':token,
+			'next':''
+		}
+		data.update(tools.getLoginInfo())
+		
+		r = session.post(LOGIN_URL, data=data)
+		#TODO: check if login is successful
+		
+	URL = "http://pcpartpicker.com/parts/{}/fetch/".format(ptype.name)
+	
+	payload = {
+		'mode': 'list',
+		'xslug': '',
+		'search': search,
+		'page': opts.get('page', 1),
+		'sort': ptype.sortString(
+			opts['sortby'],
+			opts['order']
+			)
+	}
+	
+	if True:
+		if opts['login']:
+			login()
+		
+		r = session.get(URL, params=payload)
+		with open('pypcpp\cachejson.html', 'w+') as fh:
+			fh.write(r.json()['result']['html']);
+
+	soup = BeautifulSoup(open('pypcpp\cachejson.html'))
+	rows = soup.findAll('tr')
+	
+	extracted = RowExtractor(ptype, rows).extract()
+	outputTable(ptype, extracted)

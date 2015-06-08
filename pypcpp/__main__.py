@@ -5,7 +5,7 @@ Usage:
   pypcpp.py logininfo
   pypcpp.py (-h | --help)
 
- Options:
+Options:
   -c, --cpu          CPU search
   -v, --videocard    Video Card search
   -r, --ram          RAM search
@@ -23,37 +23,36 @@ Usage:
   --user=<username>  Save username to config file
   --pass=<password>  Save password to config file
 """
-
-import tools
 from docopt import docopt
 
 try:
 	import pypcpp as pcp
 except ImportError:
 	import sys, os
-	sys.path.append(os.path.join(tools.currentDir(), '..'))
+	cpath = os.path.dirname(os.path.abspath(__file__))
+	sys.path.append(os.path.join(cpath, '..'))
 	import pypcpp as pcp
 
 def main(args):
 	if args['logininfo']:		
 		if args['--user'] or args['--pass']:
-			tools.writeLoginInfo(args['--user'], args['--pass'])
+			pcp.tools.writeLoginInfo(args['--user'], args['--pass'])
 		
-		linfo = tools.getLoginInfo()
+		linfo = pcp.tools.getLoginInfo()
 		print('Here is your login info: {}\nUse \'--user=<user>\' and \'--pass=<password>\' to save your info\nThe config file is saved in: {}'.format(linfo, tools.currentDir()))
 	
 	else:
-		search = ' '.join(arguments['<search>'])
+		sterm = ' '.join(arguments['<search>'])
 		
-		type = tools.PartType.typeFromArgs(args)
+		type = pcp.tools.PartType.typeFromArgs(args)
 		options = {
 			'type' : type,
 			'sortby' : args['--sort'],
 			'order' : 'd' if args['--descending'] else 'a',
 			'login' : args['--login']
 		}
-	
-		pcp.Search(search, options).run()
+
+		pcp.search(sterm, options)
 	
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='Python PCPartPicker 0.1')
