@@ -32,9 +32,16 @@ def search(search, opts):
 	ptype = opts['type']
 	
 	def login():
+		LOGININFO = tools.getLoginInfo()
+		if not LOGININFO['username'] or not LOGININFO['password']:
+			print('Credentials not found! Will perform search without logging in.')
+			print('\'python pypcpp -h\' for more info\n')
+			return
+
+		print('Logging in...')
 		LOGIN_URL = "https://pcpartpicker.com/accounts/login/"
 		session.headers.update({'referer':LOGIN_URL})
-		session.headers.update({'User-Agent':'pypcpp'})
+		session.headers.update({'User-Agent':'Python PCPartPicker (github.com/drivfe/pypcpp)'})
 
 		r = session.get(LOGIN_URL)
 		tokensoup = BeautifulSoup(r.text)
@@ -45,12 +52,17 @@ def search(search, opts):
 			'csrfmiddlewaretoken':token,
 			'next':''
 		}
-		data.update(tools.getLoginInfo())
+		data.update(LOGININFO)
 		
 		r = session.post(LOGIN_URL, data=data)
-		#TODO: check if login is successful
+		if 'pad-block login-error' in r.text:
+			print('LOGIN FAILED: Please check your credentials, \'python pypcpp -h\' for more info')
+			print('Will perform the search without logging in')
+		else:
+			print('Login successful!\n')
 		
 	URL = "http://pcpartpicker.com/parts/{}/fetch/".format(ptype.name)
+	CACHE = '{}\cachejson.html'.format(tools.currentDir())
 	
 	payload = {
 		'mode': 'list',
@@ -66,13 +78,12 @@ def search(search, opts):
 	if True:
 		if opts['login']:
 			login()
-		
-		r = session.get(URL, params=payload)
-		with open('pypcpp\cachejson.html', 'w+') as fh:
-			fh.write(r.json()['result']['html']);
 
-	soup = BeautifulSoup(open('pypcpp\cachejson.html'))
+		r = session.get(URL, params=payload)
+		with open(CACHE, 'w+') as fh:
+			fh.write(r.json()['result']['html'])
+
+	soup = BeautifulSoup(open(CACHE))
 	rows = soup.findAll('tr')
-	
 	extracted = RowExtractor(ptype, rows).extract()
 	outputTable(ptype, extracted)
