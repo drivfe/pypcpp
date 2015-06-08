@@ -1,5 +1,6 @@
 # PYPCPP
 (Unofficial) Command line interface for searching parts on pcpartpicker.
+Official website: https://pcpartpicker.com
 
 Python 3.x only.
 
@@ -46,7 +47,7 @@ Basic examples:
 ```sh
 python pypcpp -v r9 280
 python pypcpp -s 128gb ssd samsung
-python pypcpp -r corsair vengeance --sort=speed -d # output the fastest RAMs
+python pypcpp -r corsair vengeance --sort=speed -d # print the fastest RAMs
 ```
 
 To log in you have to set up your username and password. (This is needed if you want your setings such as 'include mail-in rebates' to affect the output):
@@ -58,8 +59,8 @@ python pypcpp logininfo # will output your credentials
 After you have set up your login info you can use the '-l/--login' switch and the program will log you in before performing a search:
 ```sh
 python pypcpp --cpu fx 6300 -l
-python pypcpp --storage western digital 1tb --sort=type -a -l # check the notes for info on what to pass to --sort
-python pypcpp -v r9 280 --sort=coreclock -d --login # This will list all r9 280s sorted by their coreclock in descending order after logging in on your account.
+python pypcpp --storage western digital 1tb --sort=type -a -l # check the notes for more info on what to pass to --sort
+python pypcpp -v r9 280 --sort=coreclock -d --login # This will list all r9 280s sorted by their coreclock speed in descending order after logging in on your account.
 ```
 
 Here is the ouput of the last example:
@@ -88,5 +89,6 @@ Searching 'r9 280' of type 'video-card' # <-- will be updated
 * Some info (such as price/gb for HDD/SSDs) are omitted because they are too long to fit the command line interface.
 * To know what to pass to the --sort argument, check the table header on pcpartpicker.com
 	* Go to: http://pcpartpicker.com/parts/power-supply/
-	* Say you want to sort by watts, you use --sort=watts
+	* Say you want to sort by watts, you use --sort=watts or --sort=modular to sort by the 'modular' column
+		* If the header has a space in it, remove it. (e.g. core clock -> coreclock)
 * Python 3.x
