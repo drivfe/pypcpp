@@ -4,3 +4,5 @@ pypcpp/cachejson.html
 pypcpp.egg-info/
 dist/
 build/
+venv/
+activate.bat
