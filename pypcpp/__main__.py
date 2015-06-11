@@ -25,6 +25,7 @@ Options:
 """
 import os
 from docopt import docopt
+from prettytable import PrettyTable
 
 def cDir():
 	return os.path.dirname(os.path.abspath(__file__))
@@ -35,6 +36,33 @@ except ImportError:
 	import sys
 	sys.path.append(os.path.join(cDir(), '..'))
 	import pypcpp as pcp
+
+def tableOutput(result):
+	if len(result) < 1:
+		print('No results found!')
+		return
+	
+	tbl = PrettyTable(list(result[0].fields))
+	tbl.align = 'l'
+	tbl.border = False
+	tbl.header_style = 'upper'
+
+	for r in result:
+		tbl.add_row(shrinkText(r.fields.values()))
+
+	print(tbl)
+
+def shrinkText(values):
+	MAX_LENGTH = 100
+	newList = list(values)
+	limit = int(MAX_LENGTH / len(newList))
+	shrink = lambda text: text if len(text) < limit else text[0:limit]+'...'
+	
+	length = len(newList[0])
+	if length > limit:
+		newList[0] = shrink(newList[0])
+		
+	return newList
 
 def main(args):
 	if args['logininfo']:		
@@ -59,8 +87,10 @@ def main(args):
 			'login' : args['--login']
 		}
 
-		pcp.search(sterm, options)
-	
+		result = pcp.search(sterm, options)
+		
+		tableOutput(result)
+
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='Python PCPartPicker 0.1')
 	#print(arguments)
