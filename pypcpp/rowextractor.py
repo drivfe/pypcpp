@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from .part import Part, CPU, VideoCard
 from collections import OrderedDict
 import constants, tools
 
