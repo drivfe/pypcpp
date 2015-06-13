@@ -3,7 +3,8 @@ import constants
 
 class VideoCard(Part):
 	_constant = constants.VIDEOCARD
-		
+	_arg = '--videocard'
+	
 	def beautifyFields(self):
 		#Only brand name of the Videocard
 		self.fields['videocard'] = self.fields['videocard'].split(' ')[0]

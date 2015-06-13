@@ -4,14 +4,15 @@ import os
 from configparser import SafeConfigParser
 
 class PartType:
-	def __init__(self, name):
-		self.name = name
+	def __init__(self, cns):
+		self.cns = cns
 		self.pclass = self.__gen_part()
 		self.fields = self.pclass.generateFields()
+		self.name = self.pclass.__name__
 		
 	def __gen_part(self):
 		for p in parts.list_parts():
-			if p.isValid(self.name):
+			if p.isValidConstant(self.cns):
 				return p
 
 	#returns a8, d8, depending on the column and order
@@ -20,26 +21,15 @@ class PartType:
 		return '{}{}'.format(order, self.fields.get(sortby, 'price'))
 
 	def newPart(self):
-		return self.pclass(self.name)
+		return self.pclass(self.cns)
 
 	@staticmethod
 	def typeFromArgs(arg):
 		typestring = None
 		
-		part_args = [
-			'--videocard',
-			'--cpu',
-			'--ram',
-			'--motherboard',
-			'--tower',
-			'--psu',
-			'--storage'
-		]
-		
-		for a in part_args:
-			if arg[a] == True:
-				cnsstring = 'constants.{}'.format(a[2::].upper())
-				typestring = eval(cnsstring)
+		for p in parts.list_parts():
+			if arg[p._arg] == True:
+				typestring = p._constant
 		
 		return PartType(typestring)
 		

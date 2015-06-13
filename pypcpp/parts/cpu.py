@@ -3,6 +3,7 @@ import constants
 
 class CPU(Part):
 	_constant = constants.CPU
+	_arg = '--cpu'
 	
 	@staticmethod
 	def generateFields():

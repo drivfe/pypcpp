@@ -38,7 +38,7 @@ def search(search, opts):
 		else:
 			cback('Login successful!\n')
 		
-	URL = "http://pcpartpicker.com/parts/{}/fetch/".format(ptype.name)
+	URL = "http://pcpartpicker.com/parts/{}/fetch/".format(ptype.cns)
 	CACHE = '{}\cachejson.html'.format(tools.currentDir())
 	
 	payload = {
@@ -60,7 +60,7 @@ def search(search, opts):
 		with open(CACHE, 'w+') as fh:
 			fh.write(r.json()['result']['html'])
 			
-	cback("Searching '{}' of part type '{}' sorted by {} in {} order.\n".format(
+	cback("Searching '{}' of '{}' sorted by {} in {} order.\n".format(
 			search,
 			ptype.name,
 			opts['sortby'],

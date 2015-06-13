@@ -3,6 +3,7 @@ import constants
 
 class Motherboard(Part):
 	_constant = constants.MOTHERBOARD
+	_arg = '--motherboard'
 	
 	@staticmethod
 	def generateFields():

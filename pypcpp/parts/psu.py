@@ -3,7 +3,8 @@ import constants
 
 class PSU(Part):
 	_constant = constants.PSU
-
+	_arg = '--psu'
+	
 	def beautifyFields(self):
 		#Only brand name
 		self.fields['powersupply'] = self.fields['powersupply'].split(' ')[0]

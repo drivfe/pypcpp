@@ -2,14 +2,14 @@ import constants
 from collections import OrderedDict
 
 class Part:
-	def __init__(self, type):
+	def __init__(self, cns):
 		self.fields = OrderedDict()
-		self.type = type
+		self.cns = cns
 		
 	@classmethod
-	def isValid(cls, cns):
+	def isValidConstant(cls, cns):
 		return cns == cls._constant
-		
+	
 	def __repr__(self):
 		ret = []
 		for k, v in self.fields.items():

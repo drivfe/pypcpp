@@ -3,6 +3,7 @@ import constants
 
 class RAM(Part):
 	_constant = constants.RAM
+	_arg = '--ram'
 	
 	@staticmethod
 	def generateFields():

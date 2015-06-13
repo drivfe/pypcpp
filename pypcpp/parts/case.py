@@ -3,6 +3,7 @@ import constants
 
 class Case(Part):
 	_constant = constants.TOWER
+	_arg = '--tower'
 	
 	@staticmethod
 	def generateFields():

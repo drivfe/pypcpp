@@ -3,7 +3,8 @@ import constants
 
 class Storage(Part):
 	_constant = constants.STORAGE
-
+	_arg = '--storage'
+	
 	def beautifyFields(self):
 		#Only brand, Western Digital fails
 		self.fields['storage'] = self.fields['storage'].split(' ')[0]
