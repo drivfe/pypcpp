@@ -50,7 +50,7 @@ python pypcpp -s 128gb ssd samsung
 python pypcpp -r corsair vengeance --sort=speed -d # print the fastest RAMs
 ```
 
-To log in you have to set up your username and password. (This is needed if you want your setings such as 'include mail-in rebates' to affect the output):
+To log in you have to set up your username and password. (This is needed if you want your settings such as 'include mail-in rebates' to affect the output):
 ```sh
 python pypcpp logininfo --user=USERHERE --pass=PASSHERE # set credentials
 python pypcpp logininfo # will output your credentials
