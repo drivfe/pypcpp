@@ -65,20 +65,19 @@ python pypcpp -v r9 280 --sort=coreclock -d --login # This will list all r9 280s
 
 Here is the ouput of the last example:
 ```sh
-Searching 'r9 280' of type 'video-card' # <-- will be updated
+Searching 'r9 280' of 'VideoCard' sorted by coreclock in descending order.
+
  VIDEOCARD   SERIES              CHIPSET  MEMORY  CORECLOCK  PRICE
- XFX         Double Dissipation  R9 280X  3GB     1.08Ghz    $259.50
- MSI         TWIN FROZR          R9 280X  3GB     1.0GHz     $385.91
- XFX         Double Dissipation  R9 280   3GB     1.0GHz     $219.98
- Gigabyte    WINDFORCE           R9 280   3GB     950MHz     $192.98
- PowerColor  TurboDuo            R9 280X  3GB     880MHz     $227.98
- PowerColor  TurboDuo            R9 280   3GB     855MHz     $188.99
- Sapphire    DUAL-X              R9 280   3GB     850MHz     $182.98
- XFX         Double Dissipation  R9 280X  3GB     850MHz     $209.99
- VisionTek                       R9 280X  3GB     850MHz     $329.99
- Sapphire    Dual-X              R9 280   3GB     850MHz     $182.98
- HIS         IceQ OC             R9 280   3GB     847MHz     $191.98
- XFX         Double Dissipation  R9 280   3GB     827MHz     $169.99
+ XFX         Double Dissipation  R9 280X  3GB     1.08Ghz    $242.98
+ XFX         Double Dissipation  R9 280   3GB     1.0GHz     $149.99
+ Gigabyte    WINDFORCE           R9 280   3GB     950MHz     $172.98
+ PowerColor  TurboDuo            R9 280X  3GB     880MHz     $207.98
+ PowerColor  TurboDuo            R9 280   3GB     855MHz     $188.89
+ Sapphire    DUAL-X              R9 280   3GB     850MHz     $162.98
+ XFX         Double Dissipation  R9 280X  3GB     850MHz     $237.50
+ VisionTek                       R9 280X  3GB     850MHz     $271.98
+ Sapphire    Dual-X              R9 280   3GB     850MHz     $149.99
+ XFX         Double Dissipation  R9 280   3GB     827MHz     $193.98
  Club        royalKing           R9 280   3GB     N/A        $299.99
  Sapphire    Dual-X              R9 280X  3GB     N/A        $229.99
 ```
