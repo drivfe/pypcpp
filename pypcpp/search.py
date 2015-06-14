@@ -38,7 +38,7 @@ def search(search, opts):
 		else:
 			cback('Login successful!\n')
 		
-	URL = "http://pcpartpicker.com/parts/{}/fetch/".format(ptype.cns)
+	URL = "http://pcpartpicker.com/parts/{}/fetch/".format(ptype.fetch)
 	CACHE = '{}\cachejson.html'.format(tools.currentDir())
 	
 	payload = {
@@ -58,7 +58,13 @@ def search(search, opts):
 
 		r = session.get(URL, params=payload)
 		with open(CACHE, 'w+') as fh:
-			fh.write(r.json()['result']['html'])
+			try:
+				rjson = r.json()['result']['html']
+				fh.write(rjson)
+			except ValueError:
+				import sys
+				cback("ERROR: No JSON returned. The website might be down. Exiting")
+				sys.exit()
 			
 	cback("Searching '{}' of '{}' sorted by {} in {} order.\n".format(
 			search,

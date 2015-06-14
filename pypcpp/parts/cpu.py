@@ -1,9 +1,8 @@
 from .common import Part
-import constants
 
 class CPU(Part):
-	_constant = constants.CPU
 	_arg = '--cpu'
+	_fetch = 'cpu'
 	
 	@staticmethod
 	def generateFields():

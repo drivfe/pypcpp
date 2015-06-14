@@ -1,9 +1,8 @@
 from .common import Part
-import constants
 
 class PSU(Part):
-	_constant = constants.PSU
 	_arg = '--psu'
+	_fetch = 'power-supply'
 	
 	def beautifyFields(self):
 		#Only brand name

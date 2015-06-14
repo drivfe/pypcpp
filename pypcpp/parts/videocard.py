@@ -1,9 +1,8 @@
 from .common import Part
-import constants
 
 class VideoCard(Part):
-	_constant = constants.VIDEOCARD
 	_arg = '--videocard'
+	_fetch = 'video-card'
 	
 	def beautifyFields(self):
 		#Only brand name of the Videocard

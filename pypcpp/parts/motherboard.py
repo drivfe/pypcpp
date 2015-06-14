@@ -1,9 +1,8 @@
 from .common import Part
-import constants
 
 class Motherboard(Part):
-	_constant = constants.MOTHERBOARD
 	_arg = '--motherboard'
+	_fetch = 'motherboard'
 	
 	@staticmethod
 	def generateFields():

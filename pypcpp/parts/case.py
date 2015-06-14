@@ -1,9 +1,8 @@
 from .common import Part
-import constants
 
 class Case(Part):
-	_constant = constants.TOWER
 	_arg = '--tower'
+	_fetch = 'case'
 	
 	@staticmethod
 	def generateFields():

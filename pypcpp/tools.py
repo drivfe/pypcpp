@@ -1,18 +1,17 @@
-import constants
 import parts
 import os
 from configparser import SafeConfigParser
 
 class PartType:
-	def __init__(self, cns):
-		self.cns = cns
+	def __init__(self, name):
+		self.name = name
 		self.pclass = self.__gen_part()
 		self.fields = self.pclass.generateFields()
-		self.name = self.pclass.__name__
+		self.fetch = self.pclass._fetch
 		
 	def __gen_part(self):
 		for p in parts.list_parts():
-			if p.isValidConstant(self.cns):
+			if p.isName(self.name):
 				return p
 
 	#returns a8, d8, depending on the column and order
@@ -21,15 +20,14 @@ class PartType:
 		return '{}{}'.format(order, self.fields.get(sortby, 'price'))
 
 	def newPart(self):
-		return self.pclass(self.cns)
+		return self.pclass()
 
 	@staticmethod
 	def typeFromArgs(arg):
 		typestring = None
-		
 		for p in parts.list_parts():
 			if arg[p._arg] == True:
-				typestring = p._constant
+				typestring = p.name()
 		
 		return PartType(typestring)
 		

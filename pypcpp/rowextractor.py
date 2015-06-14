@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from collections import OrderedDict
-import constants, tools
+import tools
 
 class RowExtractor:
 	def __init__(self, type, rows):

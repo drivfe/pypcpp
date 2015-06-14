@@ -1,9 +1,8 @@
 from .common import Part
-import constants
 
 class RAM(Part):
-	_constant = constants.RAM
 	_arg = '--ram'
+	_fetch = 'memory'
 	
 	@staticmethod
 	def generateFields():

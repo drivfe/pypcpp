@@ -7,13 +7,8 @@ from .storage import Storage
 from .videocard import VideoCard
 
 _parts_list = [
-	Case,
-	CPU,
-	Motherboard,
-	PSU,
-	RAM,
-	Storage,
-	VideoCard
+	klass for name, klass in locals().items()
+	if isinstance(klass, type) and klass.__bases__[0].__name__ == 'Part'
 ]
 
 def list_parts():

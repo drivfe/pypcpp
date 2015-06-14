@@ -1,9 +1,8 @@
 from .common import Part
-import constants
 
 class Storage(Part):
-	_constant = constants.STORAGE
 	_arg = '--storage'
+	_fetch = 'internal-hard-drive'
 	
 	def beautifyFields(self):
 		#Only brand, Western Digital fails
