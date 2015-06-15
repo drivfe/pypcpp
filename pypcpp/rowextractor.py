@@ -1,7 +1,3 @@
-from bs4 import BeautifulSoup
-from collections import OrderedDict
-import tools
-
 class RowExtractor:
 	def __init__(self, type, rows):
 		self.type = type

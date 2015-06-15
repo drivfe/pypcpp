@@ -14,6 +14,11 @@ setup(
 	keywords = "pcpartpicker",
 	url = "https://github.com/drivfe/pypcpp",
 	packages=['pypcpp', 'pypcpp.parts'],
+	entry_points={
+        'console_scripts': [
+            'pypcpp = pypcpp.__main__:main',
+        ]
+    },
 	install_requires=[
 		"beautifulsoup4",
 		"requests",

@@ -1,6 +1,6 @@
-import parts
 import os
 from configparser import SafeConfigParser
+import pypcpp.parts as parts
 
 class PartType:
 	def __init__(self, name):

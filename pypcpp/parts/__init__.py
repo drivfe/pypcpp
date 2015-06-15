@@ -1,14 +1,16 @@
-from .case import Case
-from .cpu import CPU
-from .motherboard import Motherboard
-from .psu import PSU
-from .ram import RAM
-from .storage import Storage
-from .videocard import VideoCard
+from pypcpp.parts.common import Part
+from pypcpp.parts.case import Case
+from pypcpp.parts.cpu import CPU
+from pypcpp.parts.motherboard import Motherboard
+from pypcpp.parts.psu import PSU
+from pypcpp.parts.ram import RAM
+from pypcpp.parts.storage import Storage
+from pypcpp.parts.videocard import VideoCard
 
 _parts_list = [
 	klass for name, klass in locals().items()
-	if isinstance(klass, type) and klass.__bases__[0].__name__ == 'Part'
+	if issubclass(type(klass), Part.__class__)
+	and klass.__name__ != 'Part'
 ]
 
 def list_parts():

@@ -23,12 +23,11 @@ Options:
   --user=<username>  Save username to config file
   --pass=<password>  Save password to config file
 """
+
 import os
-from docopt import docopt
 from prettytable import PrettyTable
 
-def cDir():
-	return os.path.dirname(os.path.abspath(__file__))
+cDir = lambda: os.path.dirname(os.path.abspath(__file__))
 
 try:
 	import pypcpp as pcp
@@ -36,6 +35,8 @@ except ImportError:
 	import sys
 	sys.path.append(os.path.join(cDir(), '..'))
 	import pypcpp as pcp
+
+from pypcpp.docopt import docopt
 
 def tableOutput(result):
 	if len(result) < 1:
@@ -64,7 +65,8 @@ def shrinkText(values):
 		
 	return newList
 
-def main(args):
+def main(args=None):
+	args = docopt(__doc__, version='Python PCPartPicker 0.1')
 	if args['logininfo']:		
 		if args['--user'] or args['--pass']:
 			pcp.tools.writeLoginInfo(args['--user'], args['--pass'])
@@ -77,7 +79,7 @@ def main(args):
 		print('The config file is saved in:', cDir())
 	
 	else:
-		sterm = ' '.join(arguments['<search>'])
+		sterm = ' '.join(args['<search>'])
 		
 		type = pcp.tools.PartType.typeFromArgs(args)
 		options = {
@@ -92,6 +94,4 @@ def main(args):
 		tableOutput(result)
 
 if __name__ == '__main__':
-	arguments = docopt(__doc__, version='Python PCPartPicker 0.1')
-	#print(arguments)
-	main(arguments)
+	main()

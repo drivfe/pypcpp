@@ -1,2 +1,2 @@
-from .search import search
-import tools
+from pypcpp.search import search
+import pypcpp.tools

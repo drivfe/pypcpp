@@ -1,7 +1,7 @@
-from bs4 import BeautifulSoup
-from .rowextractor import RowExtractor
-import tools
 import requests
+from bs4 import BeautifulSoup
+from pypcpp.rowextractor import RowExtractor
+import pypcpp.tools as tools
 
 def search(search, opts):
 	session = requests.Session()
@@ -12,7 +12,7 @@ def search(search, opts):
 		LOGININFO = tools.getLoginInfo()
 		if not LOGININFO['username'] or not LOGININFO['password']:
 			cback('Credentials not found! Will perform search without logging in.')
-			cback('\'python pypcpp -h\' for more info\n')
+			cback('run \'pypcpp logininfo\' for more information\n')
 			return
 
 		cback('Logging in...')
@@ -33,8 +33,8 @@ def search(search, opts):
 		
 		r = session.post(LOGIN_URL, data=data)
 		if 'pad-block login-error' in r.text:
-			cback('LOGIN FAILED: Please check your credentials, \'python pypcpp -h\' for more info')
-			cback('Will perform the search without logging in')
+			cback('LOGIN FAILED: Please check your credentials, run \'pypcpp logininfo\' for more information')
+			cback('Will perform the search without logging in\n')
 		else:
 			cback('Login successful!\n')
 		

@@ -1,4 +1,4 @@
-from .common import Part
+from pypcpp.parts.common import Part
 
 class PSU(Part):
 	_arg = '--psu'
