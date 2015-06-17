@@ -14,8 +14,8 @@ class PartType:
 			if p.isName(self.name):
 				return p
 
-	#returns a8, d8, depending on the column and order
-	#will default to price in ascending order
+	# returns a8, d8, depending on the column and order
+	# will default to price in ascending order
 	def sortString(self, sortby, order):
 		return '{}{}'.format(order, self.fields.get(sortby, 'price'))
 
@@ -30,9 +30,34 @@ class PartType:
 				typestring = p.name()
 		
 		return PartType(typestring)
+
+def extractRows(type, rows):
+	def __workRow(row):
+		tds = row.findAll('td')
 		
-def getLoginInfo():	
-	FILEPATH = '{}\pypcpp.conf'.format(currentDir())
+		part = type.newPart()
+		
+		for c, n in type.fields.items():
+			if not tds[n].a:
+				part.fields[c] = tds[n].text
+			else:
+				part.fields[c] = tds[n].a.text
+				
+		part.beautifyFields()
+		
+		return part if part.fields['price'] else None #Only return Part if price is available
+
+	result = []
+
+	for a in rows:
+		rowresult = __workRow(a)
+		if rowresult is not None:
+			result.append(rowresult)
+
+	return result
+
+def getLoginInfo():
+	FILEPATH = os.path.join(currentDir(), 'pypcpp.conf')
 	if not os.path.isfile(FILEPATH):
 		open(FILEPATH, 'a').close()
 		writeLoginInfo('', '', True)
@@ -44,7 +69,7 @@ def getLoginInfo():
 		'password': parser.get('Login Info', 'password')
 	}
 	return result
-	
+
 def writeLoginInfo(username, password, acceptNone=False):
 	parser = SafeConfigParser()
 	parser.add_section('Login Info')
@@ -52,8 +77,8 @@ def writeLoginInfo(username, password, acceptNone=False):
 		parser.set('Login Info', 'username', username)
 	if password or acceptNone:
 		parser.set('Login Info', 'password', password)
-		
-	cfg = '{}\pypcpp.conf'.format(currentDir())
+	
+	cfg = os.path.join(currentDir(), 'pypcpp.conf')
 	with open(cfg, 'w') as fh:
 		parser.write(fh)	
 		

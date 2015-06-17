@@ -1,6 +1,6 @@
+import os
 import requests
 from bs4 import BeautifulSoup
-from pypcpp.rowextractor import RowExtractor
 import pypcpp.tools as tools
 
 def search(search, opts):
@@ -39,7 +39,7 @@ def search(search, opts):
 			cback('Login successful!\n')
 		
 	URL = "http://pcpartpicker.com/parts/{}/fetch/".format(ptype.fetch)
-	CACHE = '{}\cachejson.html'.format(tools.currentDir())
+	CACHE = os.path.join(tools.currentDir(), 'cachejson.html')
 	
 	payload = {
 		'mode': 'list',
@@ -76,5 +76,5 @@ def search(search, opts):
 	
 	soup = BeautifulSoup(open(CACHE))
 	rows = soup.findAll('tr')
-	extracted = RowExtractor(ptype, rows).extract()
+	extracted = tools.extractRows(ptype, rows)
 	return extracted
