@@ -81,6 +81,11 @@ def writeLoginInfo(username, password, acceptNone=False):
 	cfg = os.path.join(currentDir(), 'pypcpp.conf')
 	with open(cfg, 'w') as fh:
 		parser.write(fh)	
-		
+	
+	# delete session file
+	sess_file = os.path.join(currentDir(), 'sess.pkl')
+	if os.path.isfile(sess_file):
+		os.remove(sess_file)
+	
 def currentDir():
 	return os.path.dirname(os.path.abspath(__file__))

@@ -1,14 +1,31 @@
 import os
+import pickle
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 import pypcpp.tools as tools
 
 def search(search, opts):
-	session = requests.Session()
 	ptype = opts['type']
 	cback = opts.get('callback', print)
+	sess_file = os.path.join(tools.currentDir(), 'sess.pkl')
+	
+	def _load_session():
+		if os.path.isfile(sess_file) and opts.get('login', False):
+			return pickle.load(open(sess_file, 'rb')), False
+		
+		return requests.Session(), True
+
+	session, new_s = _load_session()
+
+	def _dump_session():
+		if opts.get('login', False):
+			pickle.dump(session, open(sess_file, 'w+b'))
 	
 	def login():
+		if not new_s:
+			cback('Automatic log in (from the previous session).')
+			return
+			
 		LOGININFO = tools.getLoginInfo()
 		if not LOGININFO['username'] or not LOGININFO['password']:
 			cback('Credentials not found! Will perform search without logging in.')
@@ -21,9 +38,9 @@ def search(search, opts):
 		session.headers.update({'User-Agent':'Python PCPartPicker (github.com/drivfe/pypcpp)'})
 
 		r = session.get(LOGIN_URL)
-		tokensoup = BeautifulSoup(r.text)
-		token = tokensoup.find('input', attrs={'name':'csrfmiddlewaretoken'})['value']
-
+		toparse = SoupStrainer('input', attrs={'name':'csrfmiddlewaretoken'})
+		token = BeautifulSoup(r.text, parse_only=toparse).find('input')['value']
+		
 		data = {
 			'checkbox':'on',
 			'csrfmiddlewaretoken':token,
@@ -66,6 +83,9 @@ def search(search, opts):
 				cback("ERROR: No JSON returned. The website might be down. Exiting")
 				sys.exit()
 			
+		# save session to file for later
+		_dump_session()
+		
 	cback("Searching '{}' of '{}' sorted by {} in {} order.\n".format(
 			search,
 			ptype.name,

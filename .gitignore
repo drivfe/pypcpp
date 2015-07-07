@@ -1,6 +1,7 @@
 __pycache__/
 pypcpp/pypcpp.conf
 pypcpp/cachejson.html
+pypcpp/sess.pkl
 pypcpp.egg-info/
 dist/
 build/
