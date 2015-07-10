@@ -8,10 +8,10 @@ from pypcpp.parts.storage import Storage
 from pypcpp.parts.videocard import VideoCard
 
 _parts_list = [
-	klass for name, klass in locals().items()
-	if issubclass(type(klass), Part.__class__)
-	and klass.__name__ != 'Part'
+    klass for name, klass in locals().items()
+    if issubclass(type(klass), Part.__class__)
+    and klass.__name__ != 'Part'
 ]
 
 def list_parts():
-	return _parts_list
+    return _parts_list

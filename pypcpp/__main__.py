@@ -30,68 +30,68 @@ from prettytable import PrettyTable
 cDir = lambda: os.path.dirname(os.path.abspath(__file__))
 
 try:
-	import pypcpp as pcp
+    import pypcpp as pcp
 except ImportError:
-	import sys
-	sys.path.append(os.path.join(cDir(), '..'))
-	import pypcpp as pcp
+    import sys
+    sys.path.append(os.path.join(cDir(), '..'))
+    import pypcpp as pcp
 
 from pypcpp.docopt import docopt
 
 def tableOutput(result):
-	if len(result) < 1:
-		print('No results found!')
-		return
-	
-	tbl = PrettyTable(list(result[0].fields))
-	tbl.align = 'l'
-	tbl.border = False
-	tbl.header_style = 'upper'
+    if len(result) < 1:
+        print('No results found!')
+        return
+    
+    tbl = PrettyTable(list(result[0].fields))
+    tbl.align = 'l'
+    tbl.border = False
+    tbl.header_style = 'upper'
 
-	for r in result:
-		tbl.add_row(shrinkText(r.fields.values()))
+    for r in result:
+        tbl.add_row(shrinkText(r.fields.values()))
 
-	print(tbl)
+    print(tbl)
 
 def shrinkText(values):
-	MAX_LENGTH = 100
-	newList = list(values)
-	limit = int(MAX_LENGTH / len(newList))
-	shrink = lambda text: text if len(text) < limit else text[0:limit]+'...'
-	
-	length = len(newList[0])
-	if length > limit:
-		newList[0] = shrink(newList[0])
-		
-	return newList
+    MAX_LENGTH = 100
+    newList = list(values)
+    limit = int(MAX_LENGTH / len(newList))
+    shrink = lambda text: text if len(text) < limit else text[0:limit]+'...'
+    
+    length = len(newList[0])
+    if length > limit:
+        newList[0] = shrink(newList[0])
+        
+    return newList
 
 def main(args=None):
-	args = docopt(__doc__, version='Python PCPartPicker 0.1')
-	if args['logininfo']:		
-		if args['--user'] or args['--pass']:
-			pcp.tools.writeLoginInfo(args['--user'], args['--pass'])
-		
-		linfo = pcp.tools.getLoginInfo()
-		if not linfo['username'] or not linfo['password']:
-			print('Your info is not yet saved, Use \'--user=<user>\' and \'--pass=<password>\' to save your info')
-		else:
-			print('Here is your login info: {}'.format(linfo))
-		print('The config file is saved in:', cDir())
-	
-	else:
-		sterm = ' '.join(args['<search>'])
-		
-		type = pcp.tools.PartType.typeFromArgs(args)
-		options = {
-			'type' : type,
-			'sortby' : args['--sort'],
-			'order' : 'd' if args['--descending'] else 'a',
-			'login' : args['--login']
-		}
+    args = docopt(__doc__, version='Python PCPartPicker 0.1')
+    if args['logininfo']:       
+        if args['--user'] or args['--pass']:
+            pcp.tools.writeLoginInfo(args['--user'], args['--pass'])
+        
+        linfo = pcp.tools.getLoginInfo()
+        if not linfo['username'] or not linfo['password']:
+            print('Your info is not yet saved, Use \'--user=<user>\' and \'--pass=<password>\' to save your info')
+        else:
+            print('Here is your login info: {}'.format(linfo))
+        print('The config file is saved in:', cDir())
+    
+    else:
+        sterm = ' '.join(args['<search>'])
+        
+        type = pcp.tools.PartType.typeFromArgs(args)
+        options = {
+            'type' : type,
+            'sortby' : args['--sort'],
+            'order' : 'd' if args['--descending'] else 'a',
+            'login' : args['--login']
+        }
 
-		result = pcp.search(sterm, options)
-		
-		tableOutput(result)
+        result = pcp.search(sterm, options)
+        
+        tableOutput(result)
 
 if __name__ == '__main__':
-	main()
+    main()
