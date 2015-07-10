@@ -25,16 +25,13 @@ Options:
 """
 
 import os
+import sys
 from prettytable import PrettyTable
 
-cDir = lambda: os.path.dirname(os.path.abspath(__file__))
+cDir = lambda: os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(cDir()))
 
-try:
-    import pypcpp as pcp
-except ImportError:
-    import sys
-    sys.path.append(os.path.join(cDir(), '..'))
-    import pypcpp as pcp
+import pypcpp as pcp
 
 from pypcpp.docopt import docopt
 

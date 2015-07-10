@@ -39,7 +39,7 @@ def search(search, opts):
 
         r = session.get(LOGIN_URL)
         toparse = SoupStrainer('input', attrs={'name':'csrfmiddlewaretoken'})
-        token = BeautifulSoup(r.text, parse_only=toparse).find('input')['value']
+        token = BeautifulSoup(r.text, 'html.parser', parse_only=toparse).find('input')['value']
         
         data = {
             'checkbox':'on',
@@ -94,7 +94,7 @@ def search(search, opts):
         )
     )
     
-    soup = BeautifulSoup(open(CACHE))
+    soup = BeautifulSoup(open(CACHE), 'html.parser')
     rows = soup.findAll('tr')
     extracted = tools.extractRows(ptype, rows)
     return extracted
